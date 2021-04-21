@@ -55,7 +55,6 @@ void setup(){
 
   // 3. Bind templates to methods (callbacks):
   one.on("triangle circle", "detected");
-  // one.off("circle");
 }
 
 // 4. Implement callbacks:
@@ -71,7 +70,7 @@ void detected(String gesture, float percent, int startX, int startY, int centroi
 void draw(){
   background(255);
   
-  float gain = 5;  // TODO: Set Movement Gain that looks good to you. 
+  float gain = 5;
   while (myPort.available() > 0) {
     myString = myPort.readStringUntil(lf);
     if (myString != null) {
@@ -90,16 +89,15 @@ void draw(){
 
   xPosList.append(xPos);
   yPosList.append(yPos);  
-  forceList.append(force/20);       
-  println(force/20);
+  forceList.append(force/20);      
 
   fill(0); // Sets the fill color
   for (int i = 0; i < xPosList.size(); i++)
   {
-    // Optional draw:
-    one.track(xPosList.get(i), yPosList.get(i));
-    one.draw();
-    //ellipse(xPosList.get(i), yPosList.get(i), forceList.get(i), forceList.get(i));    // Draw points in the list
+    if (forceList.get(i) > 0) {
+      one.track(xPosList.get(i), yPoslist.get(i));
+    }
+    // ellipse(xPosList.get(i), yPosList.get(i), forceList.get(i), forceList.get(i));    // Draw points in the list
   }  
   fill(255, 255, 0, 100);
   ellipse(xPos, yPos, 30, 30);    // Draw a cursor
