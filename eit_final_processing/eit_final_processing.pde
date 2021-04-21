@@ -70,6 +70,7 @@ void detected(String gesture, float percent, int startX, int startY, int centroi
 void draw(){
   background(255);
   
+  // Reading IMU data
   float gain = 5;
   while (myPort.available() > 0) {
     myString = myPort.readStringUntil(lf);
@@ -89,50 +90,38 @@ void draw(){
 
   xPosList.append(xPos);
   yPosList.append(yPos);  
-  forceList.append(force/20);      
+  forceList.append((force-5)/10);      
 
-  fill(0); // Sets the fill color
   for (int i = 0; i < xPosList.size(); i++)
   {
-    if (forceList.get(i) > 0) {
-      one.track(xPosList.get(i), yPoslist.get(i));
-    }
-    // ellipse(xPosList.get(i), yPosList.get(i), forceList.get(i), forceList.get(i));    // Draw points in the list
+    // TODO: fix glitch where force gets repeated + stop tracking
+    // why does mouseDragged() automatically stop tracking, but this doesn't
+    if (forceList.get(i) > 1) {
+      println("Force [", i, "]: ", forceList.get(i));
+      one.track(xPosList.get(i), yPosList.get(i));
+    }  
   }  
+  
   fill(255, 255, 0, 100);
   ellipse(xPos, yPos, 30, 30);    // Draw a cursor
   
   // Sketch: Draw circle
-  stroke(200);
   if(name.equals("circle")){
-    stroke(0);
     background(120);
   }
-  noFill();
   
   // Sketch: Draw triangle
-  stroke(200);
   if(name.equals("triangle")){
-    stroke(0);
     fill(#a3beec);
     text("ooooh you found hidden text", width/2, height/2);
-    noFill();
   }
-  pushMatrix();
-  translate(width/10*7,height/2);
-  popMatrix();
-  
-  fill(0); noStroke();
-
-  //// Optional draw:
-  if (force/30 > 0) one.draw();
+  one.draw();
 }
 
 // 5. Track data:
-//void mouseDragged(){
-//  one.track(mouseX, mouseY);
-//  println("mouse dragged");
-//}
+void mouseDragged(){
+  one.track(mouseX, mouseY);
+}
 
 void keyPressed() {
   xPosList.clear();
@@ -140,6 +129,4 @@ void keyPressed() {
   forceList.clear();
   xPos = width/2;
   yPos = height/2;
-  //one.track(xPos, yPos);
-  println("key pressed");
 }
