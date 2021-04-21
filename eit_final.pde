@@ -48,33 +48,20 @@ void draw(){
     background(120);
   }
   noFill();
-  ellipse(width/10*3, height/2, 200, 200);
   
   // Sketch: Draw triangle
   stroke(200);
   if(name.equals("triangle")){
     stroke(0);
+    fill(#a3beec);
+    text("ooooh you found hidden text", width/2, height/2);
+    noFill();
   }
   pushMatrix();
-    translate(width/10*7,height/2);
-    triangle(0, -100, 100, 100, -100, 100);
+  translate(width/10*7,height/2);
   popMatrix();
   
   fill(0); noStroke();
-  text( "Detected gesture: "+name, 30, 40 );
-  text( "Draw anticlockwise a circle or triangle.", 30, height-30 );
-  
-  fill(#a3be8c); // green
-  text( "Start: "+(int)start.x+" / "+(int)start.y, 30, 60 );
-  ellipse(start.x, start.y, 5, 5);
-  
-  fill(#bf616a); // red
-  text( "Centroid: "+(int)centroid.x+" / "+(int)centroid.y, 30, 80 );
-  ellipse(centroid.x, centroid.y, 5, 5);
-  
-  fill(#b48ead); // purple
-  text( "End: "+(int)end.x+" / "+(int)end.y, 30, 100 );
-  ellipse(end.x, end.y, 5, 5);
 
   // Optional draw:
   one.draw();
