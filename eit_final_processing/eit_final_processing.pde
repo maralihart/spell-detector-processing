@@ -90,13 +90,14 @@ void draw(){
 
   xPosList.append(xPos);
   yPosList.append(yPos);  
-  forceList.append(force/30);       // TODO: Change this to use values in forceList to be used as diameter
-  println(force/30);
+  forceList.append(force/20);       
+  println(force/20);
 
   fill(0); // Sets the fill color
   for (int i = 0; i < xPosList.size(); i++)
   {
     // Optional draw:
+    one.track(xPosList.get(i), yPosList.get(i));
     one.draw();
     //ellipse(xPosList.get(i), yPosList.get(i), forceList.get(i), forceList.get(i));    // Draw points in the list
   }  
@@ -126,13 +127,14 @@ void draw(){
   fill(0); noStroke();
 
   //// Optional draw:
-  //one.draw();
+  if (force/30 > 0) one.draw();
 }
 
 // 5. Track data:
-void mouseDragged(){
-  one.track(mouseX, mouseY);
-}
+//void mouseDragged(){
+//  one.track(mouseX, mouseY);
+//  println("mouse dragged");
+//}
 
 void keyPressed() {
   xPosList.clear();
@@ -140,5 +142,6 @@ void keyPressed() {
   forceList.clear();
   xPos = width/2;
   yPos = height/2;
-  one.track(xPos, yPos);
+  //one.track(xPos, yPos);
+  println("key pressed");
 }
