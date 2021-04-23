@@ -19,12 +19,14 @@ float yPos = 0;
 FloatList xPosList;
 FloatList yPosList;
 FloatList forceList;
+int XMAX = 850;
+int YMAX = 500;
 
 void setup(){
   size(850, 500);
   
   println(Serial.list());  // prints serial port list
-  String portName = Serial.list()[4];  // find the right one from the print port list (see the console output). Your port might not be the first one on the list. 
+  String portName = Serial.list()[1];  // find the right one from the print port list (see the console output). Your port might not be the first one on the list. 
   myPort = new Serial(this, portName, 115200);  // open the serial port  
 
   // Lists storing x/y positions and force 
@@ -89,20 +91,12 @@ void draw(){
   
   xPos = xPos + dx * gain;
   yPos = yPos + dy * gain;  
-
-  xPosList.append(xPos);
-  yPosList.append(yPos);  
-  forceList.append((force-5)/10);      
-
-  for (int i = 0; i < xPosList.size(); i++)
-  {
-    // TODO: fix glitch where force gets repeated + stop tracking
-    // why does mouseDragged() automatically stop tracking, but this doesn't
-    if (forceList.get(i) > 1) {
-      println("Force [", i, "]: ", forceList.get(i));
-      one.track(xPosList.get(i), yPosList.get(i));
-    }  
-  }  
+  
+  xPos = checkXBounds(xPos);
+  yPos = checkYBounds(yPos);
+  if(force > 5){
+    one.track(xPos, yPos);
+  }
   
   fill(255, 255, 0, 100);
   ellipse(xPos, yPos, 30, 30);    // Draw a cursor
@@ -132,6 +126,27 @@ void draw(){
 void mouseDragged(){
   one.track(mouseX, mouseY);
 }
+
+float checkXBounds(float x){
+  if(x > XMAX){
+    return (float)XMAX;
+  }
+  if(x < 0) {
+    return 0;
+  }
+  return x;
+}
+
+float checkYBounds(float y){
+  if(y > YMAX){
+    return (float)YMAX;
+  }
+  if(y < 0) {
+    return 0;
+  }
+  return y;
+}
+
 
 void keyPressed() {
   xPosList.clear();
