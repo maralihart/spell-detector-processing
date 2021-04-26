@@ -28,7 +28,7 @@ void setup(){
   size(850, 500);
   
   println(Serial.list());  // prints serial port list
-  String portName = Serial.list()[1];  // find the right one from the print port list (see the console output). Your port might not be the first one on the list. 
+  String portName = Serial.list()[4];  // find the right one from the print port list (see the console output). Your port might not be the first one on the list. 
   myPort = new Serial(this, portName, 115200);  // open the serial port  
 
   // Lists storing x/y positions and force 
@@ -75,12 +75,12 @@ void detected(String gesture, float percent, int startX, int startY, int centroi
    // Sketch: Draw circle for Nox
    // Nox (darken screen)
    case  "Nox":
-     isDark = true;
+     background(0);
      break;
    // Sketch: Draw line up
    // Lumos (brighten screen)
    case "Lumos":
-     isDark = false;
+     background(255);
      break;
    // Sketch: Draw triangle
    // Aparecium (display hidden text)
@@ -94,7 +94,6 @@ void detected(String gesture, float percent, int startX, int startY, int centroi
 }
 
 void draw(){
-  setBackground();  
   // Reading IMU data
   float gain = 5;
   while (myPort.available() > 0) {
@@ -131,13 +130,7 @@ void draw(){
 void mouseDragged(){
   one.track(mouseX, mouseY);
 }
-void setBackground(){
-  if(isDark){
-    background(0);
-  } else {
-    background(255);
-  }
-}
+
 float checkXBounds(float x){
   if(x > XMAX){
     return (float)XMAX;
