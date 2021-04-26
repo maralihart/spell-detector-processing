@@ -23,7 +23,9 @@ int XMAX = 850;
 int YMAX = 500;
 
 int counter = 0;
-Boolean isDark = false;
+int backgroundColor = 255;
+Boolean hiddenText = false;
+
 void setup(){
   size(850, 500);
   
@@ -75,18 +77,17 @@ void detected(String gesture, float percent, int startX, int startY, int centroi
    // Sketch: Draw circle for Nox
    // Nox (darken screen)
    case  "Nox":
-     background(0);
+     backgroundColor = 0;
      break;
    // Sketch: Draw line up
    // Lumos (brighten screen)
    case "Lumos":
-     background(255);
+     backgroundColor = 255;
      break;
    // Sketch: Draw triangle
    // Aparecium (display hidden text)
    case "Aparecium":
-     fill(#a3beec);
-     text("ooooh you found hidden text", width/2, height/2);
+     hiddenText = true;
      break;
 
   }
@@ -94,6 +95,7 @@ void detected(String gesture, float percent, int startX, int startY, int centroi
 }
 
 void draw(){
+  background(backgroundColor);
   // Reading IMU data
   float gain = 5;
   while (myPort.available() > 0) {
@@ -118,7 +120,11 @@ void draw(){
   if(force > 5){
     one.track(xPos, yPos);
   }
-    
+  
+  if(hiddenText) {
+    fill(#a3beec);
+    text("ooooh you found hidden text", width/2, height/2);
+  }
   
   fill(255, 255, 0, 100);
   ellipse(xPos, yPos, 30, 30);    // Draw a cursor
