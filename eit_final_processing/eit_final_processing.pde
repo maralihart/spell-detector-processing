@@ -30,7 +30,7 @@ void setup(){
   size(850, 500);
   
   println(Serial.list());  // prints serial port list
-  String portName = Serial.list()[4];  // find the right one from the print port list (see the console output). Your port might not be the first one on the list. 
+  String portName = Serial.list()[1];  // find the right one from the print port list (see the console output). Your port might not be the first one on the list. 
   myPort = new Serial(this, portName, 115200);  // open the serial port  
 
   // Lists storing x/y positions and force 
@@ -104,8 +104,8 @@ void draw(){
       float[] nums = float(split(myString, ','));
       if (nums.length == 3)
       {
-        dx = nums[0] / 1023.0;
-        dy = -nums[1] / 1023.0;
+        dx = -nums[0] / 40.0;
+        dy = -nums[1] / 40.0;
         force = nums[2];
       }
     }
